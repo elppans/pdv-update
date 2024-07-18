@@ -43,7 +43,7 @@ copiar_diretorio() {
     local destino="$2"
 
     if [ -d "$destino" ]; then
-        echo "Copiando diretório $origem para $destino..."
+        echo "Copiando $origem para $destino..."
         sleep 3
         rsync -ahz --info=progress2 "$origem" "$destino"
     else
