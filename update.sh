@@ -1,20 +1,29 @@
 #!/bin/bash
 
-# Arquivos
+# Diretório base
+bdir="$(pwd)"
+
+# Arquivos PDV
 ctsat32l=lnx_ctsat.xz
 ctsat64l=lnx_ctsat.xz64
-ctsat32=lnx_ctsat_2_1_0.xz
-ctsat64=lnx_ctsat_2_1_0.xz64
-moduloPHPPDV56=moduloPHPPDV_2_14_165_143c_24180_php_5_6.zip
-moduloPHPPDV58=moduloPHPPDV_2_14_165_143c_24180_php_8_1.zip
 pdvGUIj=jpdvgui6.jar
-pdvGUI=jpdvgui6_v7_7_15_14.jar
-ZMAN=ZMAN_1_X_X_700_CZ.EXL
 
-# Diretorios
-pdvJava_dir='/Zanthus/Zeus/pdvJava'
-pdvGUI_dir='/Zanthus/Zeus/pdvJava/pdvGUI'
-modulo_dir='/Zanthus/Zeus/pdvJava/GERAL/SINCRO/WEB/moduloPHPPDV'
+# Arquivos locais
+ctsat32="$(find "$bdir"/*/lnx_ctsat*.xz | sort -V | tail -n 1 | xargs basename)"
+ctsat64="$(find "$bdir"/*/lnx_ctsat*.xz64 | sort -V | tail -n 1 | xargs basename)"
+moduloPHPPDV56="$(find "$bdir"/*/moduloPHPPDV*php_5_6.zip | sort -V | tail -n 1 | xargs basename)"
+moduloPHPPDV81="$(find "$bdir"/*/moduloPHPPDV*php_8_1.zip | sort -V | tail -n 1 | xargs basename)"
+pdvGUI="$(find "$bdir"/*/jpdvgui6*.jar | sort -V | tail -n 1 | xargs basename)"
+ZMAN="$(find "$bdir"/*/ZMAN*.EXL | sort -V | tail -n 1 | xargs basename)"
+
+# Diretorio base PDV
+zz='/Zanthus/Zeus'
+
+# Diretórios de aplicação
+pdvJava_dir="$zz/pdvJava"
+pdvGUI_dir="$zz/pdvJava/pdvGUI"
+modulo_dir="$zz/pdvJava/GERAL/SINCRO/WEB/moduloPHPPDV"
+ctsat_dir="$zz/ctsat"
 
 # Verifica a arquitetura do sistema
 ARCH=$(uname -m)
@@ -22,7 +31,7 @@ ARCH=$(uname -m)
 # Função para copiar diretórios
 copiar_diretorio() {
     local origem="$1"
-    local destino="/Zanthus/Zeus/$2"
+    local destino="$zz/$2"
 
     if [ -d "$destino" ]; then
         echo "Copiando diretório $origem para $destino..."
@@ -44,18 +53,18 @@ run_on_32_bits() {
     copiar_diretorio so_ubu/ lib_ubu
     copiar_diretorio ctsat/"$ctsat32" ctsat
     # Caminho para o arquivo ctsat 32
-    ctsat=/Zanthus/Zeus/ctsat/$ctsat32l
+    ctsat=$ctsat_dir/$ctsat32l
 
     # Verifica se o arquivo é um link simbólico
     if [ -L "$ctsat" ]; then
         #echo "O arquivo é um link simbólico."
         unlink "$ctsat"
-        ln -sf "/Zanthus/Zeus/ctsat/$ctsat32" "$ctsat"
-        chmod +x "/Zanthus/Zeus/ctsat/$ctsat32"
+        ln -sf "$ctsat_dir/$ctsat32" "$ctsat"
+        chmod +x "$ctsat_dir/$ctsat32"
     else
         #echo "O arquivo não é um link simbólico."
         mv "$ctsat" "$ctsat".old
-        ln -sf "/Zanthus/Zeus/ctsat/$ctsat32" "$ctsat"
+        ln -sf "$ctsat_dir/$ctsat32" "$ctsat"
     fi
 }
 
@@ -65,18 +74,18 @@ run_on_64_bits() {
     copiar_diretorio so_u64/ lib_u64
     copiar_diretorio ctsat/"$ctsat64" ctsat
     # Caminho para o arquivo ctsat 64
-    ctsat=/Zanthus/Zeus/ctsat/$ctsat64l
+    ctsat=$ctsat_dir/$ctsat64l
 
     # Verifica se o arquivo é um link simbólico
     if [ -L "$ctsat" ]; then
         #echo "O arquivo é um link simbólico."
         unlink "$ctsat"
-        ln -sf "/Zanthus/Zeus/ctsat/$ctsat64" "$ctsat"
-        chmod +x "/Zanthus/Zeus/ctsat/$ctsat64"
+        ln -sf "$ctsat_dir/$ctsat64" "$ctsat"
+        chmod +x "$ctsat_dir/$ctsat64"
     else
         #echo "O arquivo não é um link simbólico."
         mv "$ctsat" "$ctsat".old
-        ln -sf "/Zanthus/Zeus/ctsat/$ctsat64" "$ctsat"
+        ln -sf "$ctsat_dir/$ctsat64" "$ctsat"
     fi
 }
 
@@ -98,7 +107,7 @@ modulo_check() {
         if [[ "$php_version" == "5.4" ]]; then
             echo "Versão do PHP: 5.4"
             dpkg -i "$pacphp"
-            sed -i '/Z_MOUNT/i service zanthus start' /Zanthus/Zeus/pdvJava/pdvJava2
+            sed -i '/Z_MOUNT/i service zanthus start' $pdvJava_dir/pdvJava2
             copiar_diretorio moduloPHPPDV/"$moduloPHPPDV56" pdvJava/GERAL/SINCRO/WEB/moduloPHPPDV
             cd "$modulo_dir"
             unzip -q -o "$moduloPHPPDV56"
@@ -121,28 +130,17 @@ modulo_check() {
     elif [[ "$versao" == "22."* ]]; then
         # Comandos específicos para o Ubuntu 22
         echo "Executando comandos para o Ubuntu 22..."
-        copiar_diretorio moduloPHPPDV/"$moduloPHPPDV58" pdvJava/GERAL/SINCRO/WEB/moduloPHPPDV
+        copiar_diretorio moduloPHPPDV/"$moduloPHPPDV81" pdvJava/GERAL/SINCRO/WEB/moduloPHPPDV
         # shellcheck disable=SC2164
         cd "$modulo_dir"
-        unzip -q -o "$moduloPHPPDV58"
+        unzip -q -o "$moduloPHPPDV81"
     else
         echo "Versão não suportada."
     fi
 }
 
-# Chama as funções
-
-# Verifica se é 32 bits ou 64 bits e chama a função correspondente
-if [ "$ARCH" == "x86_64" ]; then
-    run_on_64_bits
-else
-    run_on_32_bits
-fi
-
-copiar_diretorio pdvGUI/"$pdvGUI" pdvJava/pdvGUI
-copiar_diretorio ZMAN/"$ZMAN" pdvJava
-modulo_check
-
+# Função para atualização do CODFON
+zman_check() {
 # shellcheck disable=SC2164
 if [ -e "$pdvJava_dir"/"$ZMAN" ]; then
     cd "$pdvJava_dir"
@@ -152,7 +150,10 @@ else
     exit 1
 
 fi
+}
 
+# Função para atualizaçao do Java do PDV
+pdvgui_check() {
 if [ -e "$pdvGUI_dir/$pdvGUI" ]; then
     if [ -L "$pdvGUI_dir/$pdvGUIj" ]; then
         #echo "O arquivo é um link simbólico."
@@ -169,3 +170,19 @@ else
     echo "$pdvGUIj não encontrado!"
     exit 1
 fi
+}
+
+# Verifica se é 32 bits ou 64 bits e chama a função correspondente
+if [ "$ARCH" == "x86_64" ]; then
+    run_on_64_bits
+else
+    run_on_32_bits
+fi
+
+# Chama as funções + parametros
+copiar_diretorio pdvGUI/"$pdvGUI" pdvJava/pdvGUI
+copiar_diretorio ZMAN/"$ZMAN" pdvJava
+modulo_check
+zman_check
+pdvgui_check
+
