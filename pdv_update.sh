@@ -1,7 +1,41 @@
 #!/bin/bash
 
+# Verifique se o usuário é root (UID 0)
+if [[ $EUID -ne 0 ]]; then
+    echo "Deve executar como Super Usuário."
+    exit 1
+fi
+
 # Diretório base
-bdir="$(pwd)"
+basedir="$(pwd)"
+
+# Defina os caminhos das pastas em um array
+multi_directories=(
+    "$basedir/ctsat"
+    "$basedir/moduloPHPPDV"
+    "$basedir/pdvGUI"
+    "$basedir/so"
+    "$basedir/so_co5"
+    "$basedir/so_u64"
+    "$basedir/so_ubu"
+    "$basedir/ZMAN")
+
+# Verifique a existência de cada pasta
+for directory in "${multi_directories[@]}"; do
+    if [[ -d "$directory" ]]; then
+        echo "A pasta '$directory' existe."
+        # Verifique se a pasta contém arquivos
+        if [[ $(ls -A "$directory") ]]; then
+            echo "A pasta '$directory' contém arquivos."
+        else
+            echo "A pasta '$directory' está vazia."
+            exit 1
+        fi
+    else
+        echo "A pasta '$directory' não existe."
+        exit 1
+    fi
+done
 
 # Arquivos PDV
 ctsat32l=lnx_ctsat.xz
@@ -103,11 +137,11 @@ run_on_64_bits() {
 
 # Verifica se é 32 bits ou 64 bits e chama a função correspondente
 pdv_check() {
-if [ "$ARCH" == "x86_64" ]; then
-    run_on_64_bits
-else
-    run_on_32_bits
-fi
+    if [ "$ARCH" == "x86_64" ]; then
+        run_on_64_bits
+    else
+        run_on_32_bits
+    fi
 }
 
 # Função para verificar a versão do Ubuntu
