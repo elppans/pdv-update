@@ -40,10 +40,11 @@ ARCH=$(uname -m)
 # Função para copiar diretórios
 copiar_diretorio() {
     local origem="$1"
+    local origem_name="$(basename $origem)"
     local destino="$2"
 
     if [ -d "$destino" ]; then
-        echo "Copiando $origem para $destino..."
+        echo "Copiando $origem_name para $destino..."
         sleep 3
         rsync -ahz --info=progress2 "$origem" "$destino"
     else
