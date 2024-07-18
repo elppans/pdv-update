@@ -25,6 +25,14 @@ pdvGUI_dir="$zz/pdvJava/pdvGUI"
 modulo_dir="$zz/pdvJava/GERAL/SINCRO/WEB/moduloPHPPDV"
 ctsat_dir="$zz/ctsat"
 
+# Criando/Mesclando diretórios para trabalho
+for dir in $pdvJava_dir $pdvGUI_dir $modulo_dir $ctsat_dir; do
+  if [ ! -d "$dir" ]; then
+    mkdir -p "$dir"
+    chmod 777 "$dir"
+  fi
+done
+
 # Verifica a arquitetura do sistema
 ARCH=$(uname -m)
 
@@ -52,6 +60,8 @@ run_on_32_bits() {
     copiar_diretorio so_co5/ lib_co5
     copiar_diretorio so_ubu/ lib_ubu
     copiar_diretorio ctsat/"$ctsat32" ctsat
+    copiar_diretorio pdvGUI/"$pdvGUI" pdvJava/pdvGUI
+    copiar_diretorio ZMAN/"$ZMAN" pdvJava
     # Caminho para o arquivo ctsat 32
     ctsat=$ctsat_dir/$ctsat32l
 
@@ -73,6 +83,8 @@ run_on_64_bits() {
     echo "Executando comandos para 64 bits..."
     copiar_diretorio so_u64/ lib_u64
     copiar_diretorio ctsat/"$ctsat64" ctsat
+    copiar_diretorio pdvGUI/"$pdvGUI" pdvJava/pdvGUI
+    copiar_diretorio ZMAN/"$ZMAN" pdvJava
     # Caminho para o arquivo ctsat 64
     ctsat=$ctsat_dir/$ctsat64l
 
@@ -180,8 +192,7 @@ else
 fi
 
 # Chama as funções + parametros
-copiar_diretorio pdvGUI/"$pdvGUI" pdvJava/pdvGUI
-copiar_diretorio ZMAN/"$ZMAN" pdvJava
+
 modulo_check
 zman_check
 pdvgui_check
