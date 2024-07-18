@@ -160,7 +160,7 @@ zman_check() {
     copiar_diretorio ZMAN/"$ZMAN" "$pdvJava_dir"
     # shellcheck disable=SC2164
     if [ -e "$pdvJava_dir"/"$ZMAN" ]; then
-        tar -zxf "$ZMAN" -C "$pdvJava_dir"
+        tar -zxf "$pdvJava_dir"/"$ZMAN" -C "$pdvJava_dir"
     else
         echo "Arquivo $ZMAN não encontrado!"
         exit 1
