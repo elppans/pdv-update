@@ -12,5 +12,5 @@ so_u64
 so_ubu  
 ZMAN  
 
-- NÃO renomeie os arquivos  
+- **NÃO** renomeie os arquivos  
 - Versão 32 e 64 bits deve ser adicionado juntos em seu diretório correspondente.  
