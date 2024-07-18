@@ -1,2 +1,4 @@
+Ubuntu 12.04 (RC26/28)
+
 dpkg -i php_5.6.28-1_i386.deb
 sed -i '/Z_MOUNT/i service zanthus start' /Zanthus/Zeus/pdvJava2
