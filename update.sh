@@ -9,12 +9,12 @@ ctsat64l=lnx_ctsat.xz64
 pdvGUIj=jpdvgui6.jar
 
 # Arquivos locais
-ctsat32="$(find "$bdir"/*/lnx_ctsat*.xz | sort -V | tail -n 1 | xargs basename)"
-ctsat64="$(find "$bdir"/*/lnx_ctsat*.xz64 | sort -V | tail -n 1 | xargs basename)"
-moduloPHPPDV56="$(find "$bdir"/*/moduloPHPPDV*php_5_6.zip | sort -V | tail -n 1 | xargs basename)"
-moduloPHPPDV81="$(find "$bdir"/*/moduloPHPPDV*php_8_1.zip | sort -V | tail -n 1 | xargs basename)"
-pdvGUI="$(find "$bdir"/*/jpdvgui6*.jar | sort -V | tail -n 1 | xargs basename)"
-ZMAN="$(find "$bdir"/*/ZMAN*.EXL | sort -V | tail -n 1 | xargs basename)"
+ctsat32="$(find ctsat/lnx_ctsat*.xz | sort -V | tail -n 1 | xargs basename)"
+ctsat64="$(find ctsat/lnx_ctsat*.xz64 | sort -V | tail -n 1 | xargs basename)"
+moduloPHPPDV56="$(find moduloPHPPDV/moduloPHPPDV*php_5_6.zip | sort -V | tail -n 1 | xargs basename)"
+moduloPHPPDV81="$(find moduloPHPPDV/moduloPHPPDV*php_8_1.zip | sort -V | tail -n 1 | xargs basename)"
+pdvGUI="$(find pdvGUI/jpdvgui6*.jar | sort -V | tail -n 1 | xargs basename)"
+ZMAN="$(find ZMAN/ZMAN*.EXL | sort -V | tail -n 1 | xargs basename)"
 
 # Diretórios de aplicação
 pdvJava_dir="/Zanthus/Zeus/pdvJava"
