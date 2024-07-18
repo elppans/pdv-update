@@ -16,14 +16,15 @@ moduloPHPPDV81="$(find "$bdir"/*/moduloPHPPDV*php_8_1.zip | sort -V | tail -n 1 
 pdvGUI="$(find "$bdir"/*/jpdvgui6*.jar | sort -V | tail -n 1 | xargs basename)"
 ZMAN="$(find "$bdir"/*/ZMAN*.EXL | sort -V | tail -n 1 | xargs basename)"
 
-# Diretorio base PDV
-zz='/Zanthus/Zeus'
-
 # Diretórios de aplicação
-pdvJava_dir="$zz/pdvJava"
-pdvGUI_dir="$zz/pdvJava/pdvGUI"
-modulo_dir="$zz/pdvJava/GERAL/SINCRO/WEB/moduloPHPPDV"
-ctsat_dir="$zz/ctsat"
+pdvJava_dir="/Zanthus/Zeus/pdvJava"
+pdvGUI_dir="/Zanthus/Zeus/pdvJava/pdvGUI"
+modulo_dir="/Zanthus/Zeus/pdvJava/GERAL/SINCRO/WEB/moduloPHPPDV"
+ctsat_dir="/Zanthus/Zeus/ctsat"
+lib_dir="/Zanthus/Zeus/lib"
+lib_co5_dir="/Zanthus/Zeus/lib_co5"
+lib_u64_dir="/Zanthus/Zeus/lib_u64"
+lib_ubu_dir="/Zanthus/Zeus/lib_ubu"
 
 # Criando/Mesclando diretórios para trabalho
 for dir in $pdvJava_dir $pdvGUI_dir $modulo_dir $ctsat_dir; do
@@ -39,7 +40,7 @@ ARCH=$(uname -m)
 # Função para copiar diretórios
 copiar_diretorio() {
     local origem="$1"
-    local destino="$zz/$2"
+    local destino="$2"
 
     if [ -d "$destino" ]; then
         echo "Copiando diretório $origem para $destino..."
@@ -56,10 +57,10 @@ copiar_diretorio() {
 # Função para executar comandos em sistemas de 32 bits
 run_on_32_bits() {
     echo "Executando comandos para 32 bits..."
-    copiar_diretorio so/ lib
-    copiar_diretorio so_co5/ lib_co5
-    copiar_diretorio so_ubu/ lib_ubu
-    copiar_diretorio ctsat/"$ctsat32" ctsat
+    copiar_diretorio so/ "$lib_dir"
+    copiar_diretorio so_co5/ "$lib_co5_dir"
+    copiar_diretorio so_ubu/ "$lib_ubu_dir"
+    copiar_diretorio ctsat/"$ctsat32" "$ctsat_dir"
 
     # Caminho para o arquivo ctsat 32
     ctsat=$ctsat_dir/$ctsat32l
@@ -80,8 +81,8 @@ run_on_32_bits() {
 # Função para executar comandos em sistemas de 64 bits
 run_on_64_bits() {
     echo "Executando comandos para 64 bits..."
-    copiar_diretorio so_u64/ lib_u64
-    copiar_diretorio ctsat/"$ctsat64" ctsat
+    copiar_diretorio so_u64/ "$lib_u64_dir"
+    copiar_diretorio ctsat/"$ctsat64" "$ctsat_dir"
 
     # Caminho para o arquivo ctsat 64
     ctsat=$ctsat_dir/$ctsat64l
@@ -127,14 +128,12 @@ modulo_check() {
             echo "Versão do PHP: 5.4"
             dpkg -i "$pacphp"
             sed -i '/Z_MOUNT/i service zanthus start' $pdvJava_dir/pdvJava2
-            copiar_diretorio moduloPHPPDV/"$moduloPHPPDV56" pdvJava/GERAL/SINCRO/WEB/moduloPHPPDV
-            cd "$modulo_dir"
-            unzip -q -o "$moduloPHPPDV56"
+            copiar_diretorio moduloPHPPDV/"$moduloPHPPDV56" "$modulo_dir"
+            unzip -q -o "$modulo_dir"/"$moduloPHPPDV56" -d "$modulo_dir"
         elif [[ "$php_version" == "5.6" ]]; then
             echo "Versão do PHP: 5.6"
-            copiar_diretorio moduloPHPPDV/"$moduloPHPPDV56" pdvJava/GERAL/SINCRO/WEB/moduloPHPPDV
-            cd "$modulo_dir"
-            unzip -q -o "$moduloPHPPDV56"
+            copiar_diretorio moduloPHPPDV/"$moduloPHPPDV56" "$modulo_dir"
+            unzip -q -o "$modulo_dir"/"$moduloPHPPDV56" -d "$modulo_dir"
         else
             echo "Versão do PHP não é 5.4 nem 5.6."
             exit 1
@@ -142,17 +141,15 @@ modulo_check() {
     elif [[ "$versao" == "16."* ]]; then
         # Comandos específicos para o Ubuntu 16
         echo "Executando comandos para o Ubuntu 16..."
-        copiar_diretorio moduloPHPPDV/"$moduloPHPPDV56" pdvJava/GERAL/SINCRO/WEB/moduloPHPPDV
+        copiar_diretorio moduloPHPPDV/"$moduloPHPPDV56" "$modulo_dir"
         # shellcheck disable=SC2164
-        cd "$modulo_dir"
-        unzip -q -o "$moduloPHPPDV56"
+        unzip -q -o "$modulo_dir"/"$moduloPHPPDV56" -d "$modulo_dir"
     elif [[ "$versao" == "22."* ]]; then
         # Comandos específicos para o Ubuntu 22
         echo "Executando comandos para o Ubuntu 22..."
-        copiar_diretorio moduloPHPPDV/"$moduloPHPPDV81" pdvJava/GERAL/SINCRO/WEB/moduloPHPPDV
+        copiar_diretorio moduloPHPPDV/"$moduloPHPPDV81" "$modulo_dir"
         # shellcheck disable=SC2164
-        cd "$modulo_dir"
-        unzip -q -o "$moduloPHPPDV81"
+        unzip -q -o "$modulo_dir"/"$moduloPHPPDV81" -d "$modulo_dir"
     else
         echo "Versão não suportada."
     fi
@@ -160,11 +157,10 @@ modulo_check() {
 
 # Função para atualização do CODFON
 zman_check() {
-    copiar_diretorio ZMAN/"$ZMAN" pdvJava
+    copiar_diretorio ZMAN/"$ZMAN" "$pdvJava_dir"
     # shellcheck disable=SC2164
     if [ -e "$pdvJava_dir"/"$ZMAN" ]; then
-        cd "$pdvJava_dir"
-        tar -zxf "$ZMAN"
+        tar -zxf "$ZMAN" -C "$pdvJava_dir"
     else
         echo "Arquivo $ZMAN não encontrado!"
         exit 1
@@ -174,7 +170,7 @@ zman_check() {
 
 # Função para atualizaçao do Java do PDV
 pdvgui_check() {
-    copiar_diretorio pdvGUI/"$pdvGUI" pdvJava/pdvGUI
+    copiar_diretorio pdvGUI/"$pdvGUI" "$pdvGUI_dir"
 
     if [ -e "$pdvGUI_dir/$pdvGUI" ]; then
         if [ -L "$pdvGUI_dir/$pdvGUIj" ]; then
