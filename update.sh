@@ -27,10 +27,10 @@ ctsat_dir="$zz/ctsat"
 
 # Criando/Mesclando diretórios para trabalho
 for dir in $pdvJava_dir $pdvGUI_dir $modulo_dir $ctsat_dir; do
-  if [ ! -d "$dir" ]; then
-    mkdir -p "$dir"
-    chmod 777 "$dir"
-  fi
+    if [ ! -d "$dir" ]; then
+        mkdir -p "$dir"
+        chmod 777 "$dir"
+    fi
 done
 
 # Verifica a arquitetura do sistema
@@ -60,8 +60,7 @@ run_on_32_bits() {
     copiar_diretorio so_co5/ lib_co5
     copiar_diretorio so_ubu/ lib_ubu
     copiar_diretorio ctsat/"$ctsat32" ctsat
-    copiar_diretorio pdvGUI/"$pdvGUI" pdvJava/pdvGUI
-    copiar_diretorio ZMAN/"$ZMAN" pdvJava
+
     # Caminho para o arquivo ctsat 32
     ctsat=$ctsat_dir/$ctsat32l
 
@@ -83,8 +82,7 @@ run_on_64_bits() {
     echo "Executando comandos para 64 bits..."
     copiar_diretorio so_u64/ lib_u64
     copiar_diretorio ctsat/"$ctsat64" ctsat
-    copiar_diretorio pdvGUI/"$pdvGUI" pdvJava/pdvGUI
-    copiar_diretorio ZMAN/"$ZMAN" pdvJava
+
     # Caminho para o arquivo ctsat 64
     ctsat=$ctsat_dir/$ctsat64l
 
@@ -99,6 +97,15 @@ run_on_64_bits() {
         mv "$ctsat" "$ctsat".old
         ln -sf "$ctsat_dir/$ctsat64" "$ctsat"
     fi
+}
+
+# Verifica se é 32 bits ou 64 bits e chama a função correspondente
+pdv_check() {
+if [ "$ARCH" == "x86_64" ]; then
+    run_on_64_bits
+else
+    run_on_32_bits
+fi
 }
 
 # Função para verificar a versão do Ubuntu
@@ -153,47 +160,42 @@ modulo_check() {
 
 # Função para atualização do CODFON
 zman_check() {
-# shellcheck disable=SC2164
-if [ -e "$pdvJava_dir"/"$ZMAN" ]; then
-    cd "$pdvJava_dir"
-    tar -zxf "$ZMAN"
-else
-    echo "Arquivo $ZMAN não encontrado!"
-    exit 1
+    copiar_diretorio ZMAN/"$ZMAN" pdvJava
+    # shellcheck disable=SC2164
+    if [ -e "$pdvJava_dir"/"$ZMAN" ]; then
+        cd "$pdvJava_dir"
+        tar -zxf "$ZMAN"
+    else
+        echo "Arquivo $ZMAN não encontrado!"
+        exit 1
 
-fi
+    fi
 }
 
 # Função para atualizaçao do Java do PDV
 pdvgui_check() {
-if [ -e "$pdvGUI_dir/$pdvGUI" ]; then
-    if [ -L "$pdvGUI_dir/$pdvGUIj" ]; then
-        #echo "O arquivo é um link simbólico."
-        unlink "$pdvGUI_dir/$pdvGUIj"
-        ln -sf "$pdvGUI_dir/$pdvGUI" "$pdvGUI_dir/$pdvGUIj"
-        chmod +x "$pdvGUI_dir/$pdvGUI"
+    copiar_diretorio pdvGUI/"$pdvGUI" pdvJava/pdvGUI
+
+    if [ -e "$pdvGUI_dir/$pdvGUI" ]; then
+        if [ -L "$pdvGUI_dir/$pdvGUIj" ]; then
+            #echo "O arquivo é um link simbólico."
+            unlink "$pdvGUI_dir/$pdvGUIj"
+            ln -sf "$pdvGUI_dir/$pdvGUI" "$pdvGUI_dir/$pdvGUIj"
+            chmod +x "$pdvGUI_dir/$pdvGUI"
+        else
+            #echo "O arquivo não é um link simbólico."
+            mv "$pdvGUI_dir/$pdvGUIj" "$pdvGUI_dir/$pdvGUIj.old"
+            ln -sf "$pdvGUI_dir/$pdvGUI" "$pdvGUI_dir/$pdvGUIj"
+            chmod +x "$pdvGUI_dir/$pdvGUI"
+        fi
     else
-        #echo "O arquivo não é um link simbólico."
-        mv "$pdvGUI_dir/$pdvGUIj" "$pdvGUI_dir/$pdvGUIj.old"
-        ln -sf "$pdvGUI_dir/$pdvGUI" "$pdvGUI_dir/$pdvGUIj"
-        chmod +x "$pdvGUI_dir/$pdvGUI"
+        echo "$pdvGUIj não encontrado!"
+        exit 1
     fi
-else
-    echo "$pdvGUIj não encontrado!"
-    exit 1
-fi
 }
 
-# Verifica se é 32 bits ou 64 bits e chama a função correspondente
-if [ "$ARCH" == "x86_64" ]; then
-    run_on_64_bits
-else
-    run_on_32_bits
-fi
-
-# Chama as funções + parametros
-
+# Chama as funções para PDV
+pdv_check
 modulo_check
 zman_check
 pdvgui_check
-
