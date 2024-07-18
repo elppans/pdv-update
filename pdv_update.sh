@@ -25,10 +25,8 @@ for directory in "${multi_directories[@]}"; do
     if [[ -d "$directory" ]]; then
         #echo "A pasta '$directory' existe."
         # Verifique se a pasta contém arquivos
-        if [[ $(ls -A "$directory") ]]; then
+        if [[ ! $(ls -A "$directory") ]]; then
             #echo "A pasta '$directory' contém arquivos."
-            echo ""
-        else
             echo "A pasta '$directory' está vazia."
             exit 1
         fi
