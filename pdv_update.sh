@@ -128,6 +128,7 @@ run_on_32_bits() {
         #echo "O arquivo não é um link simbólico."
         mv "$ctsat" "$ctsat".old
         ln -sf "$ctsat_dir/$ctsat32" "$ctsat"
+        chmod +x "$ctsat_dir/$ctsat32"
     fi
 }
 
@@ -150,6 +151,7 @@ run_on_64_bits() {
         #echo "O arquivo não é um link simbólico."
         mv "$ctsat" "$ctsat".old
         ln -sf "$ctsat_dir/$ctsat64" "$ctsat"
+        chmod +x "$ctsat_dir/$ctsat64"
     fi
 }
 
