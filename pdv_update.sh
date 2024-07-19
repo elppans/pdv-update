@@ -92,7 +92,8 @@ ARCH=$(uname -m)
 # Função para copiar diretórios
 copiar_diretorio() {
     local origem="$1"
-    local origem_name="$(basename $origem)"
+    local origem_name
+    origem_name="$(basename "$origem")"
     local destino="$2"
 
     if [ -d "$destino" ]; then
