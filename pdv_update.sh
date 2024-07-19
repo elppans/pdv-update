@@ -41,13 +41,32 @@ ctsat32l=lnx_ctsat.xz
 ctsat64l=lnx_ctsat.xz64
 pdvGUIj=jpdvgui6.jar
 
+# Função para verificar se a variável está vazia
+check_variable() {
+    if [ -z "$1" ]; then
+        echo "Erro: Não foi encontrado o arquivo correspondente para a variável $2."
+        exit 1
+    fi
+}
+
 # Arquivos locais
-ctsat32="$(find ctsat/lnx_ctsat*.xz | sort -V | tail -n 1 | xargs basename)"
-ctsat64="$(find ctsat/lnx_ctsat*.xz64 | sort -V | tail -n 1 | xargs basename)"
-moduloPHPPDV56="$(find moduloPHPPDV/moduloPHPPDV*php_5_6.zip | sort -V | tail -n 1 | xargs basename)"
-moduloPHPPDV81="$(find moduloPHPPDV/moduloPHPPDV*php_8_1.zip | sort -V | tail -n 1 | xargs basename)"
-pdvGUI="$(find pdvGUI/jpdvgui6*.jar | sort -V | tail -n 1 | xargs basename)"
-ZMAN="$(find ZMAN/ZMAN*.EXL | sort -V | tail -n 1 | xargs basename)"
+ctsat32="$(find ctsat/lnx_ctsat*.xz 2>/dev/null | sort -V | tail -n 1 | xargs -r basename 2>/dev/null)"
+check_variable "$ctsat32" "ctsat32"
+
+ctsat64="$(find ctsat/lnx_ctsat*.xz64 2>/dev/null | sort -V | tail -n 1 | xargs -r basename 2>/dev/null)"
+check_variable "$ctsat64" "ctsat64"
+
+moduloPHPPDV56="$(find moduloPHPPDV/moduloPHPPDV*php_5_6.zip 2>/dev/null | sort -V | tail -n 1 | xargs -r basename 2>/dev/null)"
+check_variable "$moduloPHPPDV56" "moduloPHPPDV56"
+
+moduloPHPPDV81="$(find moduloPHPPDV/moduloPHPPDV*php_8_1.zip 2>/dev/null | sort -V | tail -n 1 | xargs -r basename 2>/dev/null)"
+check_variable "$moduloPHPPDV81" "moduloPHPPDV81"
+
+pdvGUI="$(find pdvGUI/jpdvgui6*.jar 2>/dev/null | sort -V | tail -n 1 | xargs -r basename 2>/dev/null)"
+check_variable "$pdvGUI" "pdvGUI"
+
+ZMAN="$(find ZMAN/ZMAN*.EXL 2>/dev/null | sort -V | tail -n 1 | xargs -r basename 2>/dev/null)"
+check_variable "$ZMAN" "ZMAN"
 
 # Diretórios de aplicação
 pdvJava_dir="/Zanthus/Zeus/pdvJava"
