@@ -25,6 +25,7 @@ function exibir_ajuda {
     echo "  --zman|-z      : Atualiza o CODFON do PDV"
     echo "  --jpdvgui6|-j  : Atualiza o Java do PDV"
     echo "  --pdv|-p       : Atualiza todos os módulos {-l,-c,-m,-z,-j}"
+    echo "  --help|p       : Exibe esta ajuda e sai"
     exit 0
 }
 
@@ -51,7 +52,7 @@ case $update in
         jpdvgui6_check
         ;;
     --pdv|-p)
-        # Atualiza todos os módulos
+        # Atualiza todos os módulos {-l,-c,-m,-z,-j}
         lib_check
         ctsat_check
         modulo_check
@@ -59,12 +60,12 @@ case $update in
         jpdvgui6_check
         ;;
     --help|-h)
-        # Exibe a ajuda e sai
+        # Exibe esta ajuda e sai
         exibir_ajuda
         ;;
     *)
         # Caso vazio, exibe a ajuda e sai
-        #echo "Função desconhecida."
+        echo "Função desconhecida."
         exibir_ajuda
         ;;
 esac
