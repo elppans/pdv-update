@@ -65,7 +65,7 @@ case $update in
         ;;
     *)
         # Caso vazio, exibe a ajuda e sai
-        echo "Função desconhecida."
-        exibir_ajuda
+        echo "Função desconhecida, digite {--help ou -h}."
+        exit 1
         ;;
 esac
