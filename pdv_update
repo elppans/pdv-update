@@ -15,9 +15,56 @@ source "modulos/jpdvgui6"
 }
 export_mod
 
+# Função de ajuda
+function exibir_ajuda {
+    echo "Uso: $0 [opção]"
+    echo "Opções disponíveis:"
+    echo "  --lib|-l       : Atualiza as bibliotecas do PDV"
+    echo "  --ctsat|-c     : Atualiza o ctsat do PDV"
+    echo "  --modulo|-m    : Atualiza o moduloPHPPDV do PDV"
+    echo "  --zman|-z      : Atualiza o CODFON do PDV"
+    echo "  --jpdvgui6|-j  : Atualiza o Java do PDV"
+    echo "  --pdv|-p       : Atualiza todos os módulos {-l,-c,-m,-z,-j}"
+    exit 0
+}
+
 # Chama as funções para PDV
-lib_check
-ctsat_check
-modulo_check
-zman_check
-jpdvgui6_check
+case $update in
+    --lib|-l)
+        # Atualiza as bibliotecas do PDV
+        lib_check
+        ;;
+    --ctsat|-c)
+        # Atualiza o ctsat do PDV
+        ctsat_check
+        ;;
+    --modulo|-m)
+        # Atualiza o moduloPHPPDV do PDV
+        modulo_check
+        ;;
+    --zman|-z)
+        # Atualiza o CODFON do PDV
+        zman_check
+        ;;
+    --jpdvgui6|-j)
+        # Atualiza o Java do PDV
+        jpdvgui6_check
+        ;;
+    --pdv|-p)
+        # Atualiza todos os módulos
+        lib_check
+        ctsat_check
+        modulo_check
+        zman_check
+        jpdvgui6_check
+        ;;
+    --help|-h)
+        # Exibe a ajuda e sai
+        exibir_ajuda
+        ;;
+    *)
+        # Caso vazio, exibe a ajuda e sai
+        #echo "Função desconhecida."
+        exibir_ajuda
+        ;;
+esac
