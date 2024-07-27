@@ -1,5 +1,15 @@
+# Ignorar tudo
 *
-!/.SRCINFO
+# NÃO ignorar os arquivos especificados
 !/.gitignore
 !/README.md
-!/update.sh
+!/pdv_update
+!/modulos/ambiente"
+!/modulos/diretorio"
+!/modulos/lib"
+!/modulos/ctsat"
+!/modulos/modphp"
+!/modulos/codfon"
+!/modulos/jpdvgui6"
+!/php/php_5.6.28-1_i386.deb
+!/php/php56_u12.txt
