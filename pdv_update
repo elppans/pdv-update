@@ -1,6 +1,10 @@
 #!/bin/env bash
 
+update=("$@")
+export update
+
 # shellcheck source=/dev/null
+export_mod() {
 source "modulos/ambiente"
 source "modulos/diretorio"
 source "modulos/lib"
@@ -8,6 +12,8 @@ source "modulos/ctsat"
 source "modulos/modphp"
 source "modulos/codfon"
 source "modulos/jpdvgui6"
+}
+export_mod
 
 # Chama as funções para PDV
 lib_check
