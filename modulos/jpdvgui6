@@ -1,0 +1,28 @@
+#!/bin/env bash
+
+# shellcheck source=/dev/null
+source "modulos/ambiente"
+source "modulos/diretorio"
+
+# Função para atualizaçao do Java do PDV
+# shellcheck disable=SC2154
+jpdvgui6_check() {
+    copiar_diretorio pdvGUI/"$pdvGUI" "$pdvGUI_dir"
+
+    if [ -e "$pdvGUI_dir/$pdvGUI" ]; then
+        if [ -L "$pdvGUI_dir/$pdvGUIj" ]; then
+            #echo "O arquivo é um link simbólico."
+            unlink "$pdvGUI_dir/$pdvGUIj"
+            ln -sf "$pdvGUI_dir/$pdvGUI" "$pdvGUI_dir/$pdvGUIj"
+            chmod +x "$pdvGUI_dir/$pdvGUI"
+        else
+            #echo "O arquivo não é um link simbólico."
+            mv "$pdvGUI_dir/$pdvGUIj" "$pdvGUI_dir/$pdvGUIj.old"
+            ln -sf "$pdvGUI_dir/$pdvGUI" "$pdvGUI_dir/$pdvGUIj"
+            chmod +x "$pdvGUI_dir/$pdvGUI"
+        fi
+    else
+        echo "$pdvGUIj não encontrado!"
+        exit 1
+    fi
+}

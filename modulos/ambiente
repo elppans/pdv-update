@@ -1,0 +1,92 @@
+#!/bin/env bash
+
+# Verifique se o usuário é root (UID 0)
+if [[ $EUID -ne 0 ]]; then
+    echo "Deve executar como Super Usuário."
+    exit 1
+fi
+
+# Diretório base
+basedir="$(pwd)"
+export basedir
+
+# Defina os caminhos das pastas em um array
+multi_directories=(
+    "$basedir/ctsat"
+    "$basedir/moduloPHPPDV"
+    "$basedir/pdvGUI"
+    "$basedir/so"
+    "$basedir/so_co5"
+    "$basedir/so_u64"
+    "$basedir/so_ubu"
+    "$basedir/ZMAN")
+
+# Verifique a existência de cada pasta
+for directory in "${multi_directories[@]}"; do
+    if [[ -d "$directory" ]]; then
+        #echo "A pasta '$directory' existe."
+        # Verifique se a pasta contém arquivos
+        if [[ ! $(ls -A "$directory") ]]; then
+            #echo "A pasta '$directory' contém arquivos."
+            echo "A pasta '$directory' está vazia."
+            exit 1
+        fi
+    else
+        echo "A pasta '$directory' não existe."
+        exit 1
+    fi
+done
+
+# Arquivos PDV
+export ctsat32l=lnx_ctsat.xz
+export ctsat64l=lnx_ctsat.xz64
+export pdvGUIj=jpdvgui6.jar
+
+# Função para verificar se a variável está vazia
+check_variable() {
+    if [ -z "$1" ]; then
+        echo "Erro: Não foi encontrado o arquivo correspondente para a variável $2."
+        exit 1
+    fi
+}
+
+# Arquivos locais
+ctsat32="$(find ctsat/lnx_ctsat*.xz 2>/dev/null | sort -V | tail -n 1 | xargs -r basename 2>/dev/null)"
+check_variable "$ctsat32" "ctsat32"
+
+ctsat64="$(find ctsat/lnx_ctsat*.xz64 2>/dev/null | sort -V | tail -n 1 | xargs -r basename 2>/dev/null)"
+check_variable "$ctsat64" "ctsat64"
+
+moduloPHPPDV56="$(find moduloPHPPDV/moduloPHPPDV*php_5_6.zip 2>/dev/null | sort -V | tail -n 1 | xargs -r basename 2>/dev/null)"
+check_variable "$moduloPHPPDV56" "moduloPHPPDV56"
+
+moduloPHPPDV81="$(find moduloPHPPDV/moduloPHPPDV*php_8_1.zip 2>/dev/null | sort -V | tail -n 1 | xargs -r basename 2>/dev/null)"
+check_variable "$moduloPHPPDV81" "moduloPHPPDV81"
+
+pdvGUI="$(find pdvGUI/jpdvgui6*.jar 2>/dev/null | sort -V | tail -n 1 | xargs -r basename 2>/dev/null)"
+check_variable "$pdvGUI" "pdvGUI"
+
+ZMAN="$(find ZMAN/ZMAN*.EXL 2>/dev/null | sort -V | tail -n 1 | xargs -r basename 2>/dev/null)"
+check_variable "$ZMAN" "ZMAN"
+
+# Diretórios de aplicação
+export pdvJava_dir="/Zanthus/Zeus/pdvJava"
+export pdvGUI_dir="/Zanthus/Zeus/pdvJava/pdvGUI"
+export modulo_dir="/Zanthus/Zeus/pdvJava/GERAL/SINCRO/WEB/moduloPHPPDV"
+export ctsat_dir="/Zanthus/Zeus/ctsat"
+export lib_dir="/Zanthus/Zeus/lib"
+export lib_co5_dir="/Zanthus/Zeus/lib_co5"
+export lib_u64_dir="/Zanthus/Zeus/lib_u64"
+export lib_ubu_dir="/Zanthus/Zeus/lib_ubu"
+
+# Criando/Mesclando diretórios para trabalho
+for dir in $pdvJava_dir $pdvGUI_dir $modulo_dir $ctsat_dir; do
+    if [ ! -d "$dir" ]; then
+        mkdir -p "$dir"
+        chmod 777 "$dir"
+    fi
+done
+
+# Verifica a arquitetura do sistema
+ARCH=$(uname -m)
+export ARCH

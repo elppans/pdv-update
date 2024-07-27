@@ -1,0 +1,60 @@
+#!/bin/env bash
+
+# shellcheck source=/dev/null
+source "modulos/ambiente"
+source "modulos/diretorio"
+
+# Função para executar comandos em sistemas de 32 bits
+# shellcheck disable=SC2154
+ctsat_on_32_bits() {
+    echo "Executando comandos para ctsat 32 bits..."
+    copiar_diretorio ctsat/"$ctsat32" "$ctsat_dir"
+
+    # Caminho para o arquivo ctsat 32
+    ctsat=$ctsat_dir/$ctsat32l
+
+    # Verifica se o arquivo é um link simbólico
+    if [ -L "$ctsat" ]; then
+        #echo "O arquivo é um link simbólico."
+        unlink "$ctsat"
+        ln -sf "$ctsat_dir/$ctsat32" "$ctsat"
+        chmod +x "$ctsat_dir/$ctsat32"
+    else
+        #echo "O arquivo não é um link simbólico."
+        mv "$ctsat" "$ctsat".old
+        ln -sf "$ctsat_dir/$ctsat32" "$ctsat"
+        chmod +x "$ctsat_dir/$ctsat32"
+    fi
+}
+
+# Função para executar comandos em sistemas de 64 bits
+# shellcheck disable=SC2154
+ctsat_on_64_bits() {
+    echo "Executando comandos para ctsat 64 bits..."
+    copiar_diretorio ctsat/"$ctsat64" "$ctsat_dir"
+
+    # Caminho para o arquivo ctsat 64
+    ctsat=$ctsat_dir/$ctsat64l
+
+    # Verifica se o arquivo é um link simbólico
+    if [ -L "$ctsat" ]; then
+        #echo "O arquivo é um link simbólico."
+        unlink "$ctsat"
+        ln -sf "$ctsat_dir/$ctsat64" "$ctsat"
+        chmod +x "$ctsat_dir/$ctsat64"
+    else
+        #echo "O arquivo não é um link simbólico."
+        mv "$ctsat" "$ctsat".old
+        ln -sf "$ctsat_dir/$ctsat64" "$ctsat"
+        chmod +x "$ctsat_dir/$ctsat64"
+    fi
+}
+
+# Verifica se é 32 bits ou 64 bits e chama a função correspondente
+ctsat_check() {
+    if [ "$ARCH" == "x86_64" ]; then
+        ctsat_on_64_bits
+    else
+        ctsat_on_32_bits
+    fi
+}

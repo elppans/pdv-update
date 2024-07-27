@@ -1,0 +1,16 @@
+#!/bin/env bash
+
+# shellcheck source=/dev/null
+source "modulos/ambiente"
+source "modulos/diretorio"
+source "modulos/lib"
+source "modulos/ctsat"
+source "modulos/modphp"
+source "modulos/codfon"
+
+# Chama as funções para PDV
+lib_check
+ctsat_check
+modulo_check
+zman_check
+pdvgui_check

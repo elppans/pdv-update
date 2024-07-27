@@ -1,0 +1,30 @@
+#!/bin/env bash
+
+# shellcheck source=/dev/null
+source "modulos/ambiente"
+source "modulos/diretorio"
+
+# Função para executar comandos em sistemas de 32 bits
+# shellcheck disable=SC2154
+lib_on_32_bits() {
+    echo "Executando comandos para bibliotecas 32 bits..."
+    copiar_diretorio so/ "$lib_dir"
+    copiar_diretorio so_co5/ "$lib_co5_dir"
+    copiar_diretorio so_ubu/ "$lib_ubu_dir"
+}
+
+# Função para executar comandos em sistemas de 64 bits
+# shellcheck disable=SC2154
+lib_on_64_bits() {
+    echo "Executando comandos para bibliotecas 64 bits..."
+    copiar_diretorio so_u64/ "$lib_u64_dir"
+}
+
+# Verifica se é 32 bits ou 64 bits e chama a função correspondente
+lib_check() {
+    if [ "$ARCH" == "x86_64" ]; then
+        lib_on_64_bits
+    else
+        lib_on_32_bits
+    fi
+}

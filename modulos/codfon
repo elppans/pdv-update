@@ -1,0 +1,19 @@
+#!/bin/env bash
+
+# shellcheck source=/dev/null
+source "modulos/ambiente"
+source "modulos/diretorio"
+
+# Função para atualização do CODFON
+# shellcheck disable=SC2154
+zman_check() {
+    copiar_diretorio ZMAN/"$ZMAN" "$pdvJava_dir"
+    # shellcheck disable=SC2164
+    if [ -e "$pdvJava_dir"/"$ZMAN" ]; then
+        tar -zxf "$pdvJava_dir"/"$ZMAN" -C "$pdvJava_dir"
+    else
+        echo "Arquivo $ZMAN não encontrado!"
+        exit 1
+
+    fi
+}

@@ -1,0 +1,23 @@
+#!/bin/env bash
+
+# shellcheck source=/dev/null
+source "modulos/ambiente"
+
+# Função para copiar diretórios
+copiar_diretorio() {
+    local origem="$1"
+    local origem_name
+    origem_name="$(basename "$origem")"
+    local destino="$2"
+
+    if [ -d "$destino" ]; then
+        echo "Copiando $origem_name para $destino..."
+        sleep 3
+        rsync -ahz --info=progress2 "$origem" "$destino"
+    else
+        echo "Diretório $destino não existe."
+    fi
+}
+
+# Copia os diretórios fixos (?):
+# copiar_diretorio parametro_origem parametro_destino

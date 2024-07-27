@@ -1,0 +1,52 @@
+#!/bin/env bash
+
+# shellcheck source=/dev/null
+source "modulos/ambiente"
+source "modulos/diretorio"
+
+# Função para verificar a versão do Ubuntu
+# shellcheck disable=SC2154
+modulo_check() {
+    local versao
+    versao=$(lsb_release -rs)
+    #echo "Versão do Ubuntu: $versao"
+
+    if [[ "$versao" == "12."* ]]; then
+        # Comandos específicos para o Ubuntu 12
+        echo "Executando comandos para o Ubuntu 12..."
+        # Verifica a versão do PHP
+        pacphp="php/php_5.6.28-1_i386.deb"
+        php_version=$(php -v | grep -oP 'PHP \K[0-9]+\.[0-9]+')
+
+        # Compara a versão e executa os comandos correspondentes
+        # shellcheck disable=SC2164
+        if [[ "$php_version" == "5.4" ]]; then
+            echo "Versão do PHP: 5.4"
+            dpkg -i "$pacphp"
+            sed -i '/Z_MOUNT/i service zanthus start' "$pdvJava_dir"/pdvJava2
+            copiar_diretorio moduloPHPPDV/"$moduloPHPPDV56" "$modulo_dir"
+            unzip -q -o "$modulo_dir"/"$moduloPHPPDV56" -d "$modulo_dir"
+        elif [[ "$php_version" == "5.6" ]]; then
+            echo "Versão do PHP: 5.6"
+            copiar_diretorio moduloPHPPDV/"$moduloPHPPDV56" "$modulo_dir"
+            unzip -q -o "$modulo_dir"/"$moduloPHPPDV56" -d "$modulo_dir"
+        else
+            echo "Versão do PHP não é 5.4 nem 5.6."
+            exit 1
+        fi
+    elif [[ "$versao" == "16."* ]]; then
+        # Comandos específicos para o Ubuntu 16
+        echo "Executando comandos para o Ubuntu 16..."
+        copiar_diretorio moduloPHPPDV/"$moduloPHPPDV56" "$modulo_dir"
+        # shellcheck disable=SC2164
+        unzip -q -o "$modulo_dir"/"$moduloPHPPDV56" -d "$modulo_dir"
+    elif [[ "$versao" == "22."* ]]; then
+        # Comandos específicos para o Ubuntu 22
+        echo "Executando comandos para o Ubuntu 22..."
+        copiar_diretorio moduloPHPPDV/"$moduloPHPPDV81" "$modulo_dir"
+        # shellcheck disable=SC2164
+        unzip -q -o "$modulo_dir"/"$moduloPHPPDV81" -d "$modulo_dir"
+    else
+        echo "Versão não suportada."
+    fi
+}
