@@ -7,6 +7,7 @@ source "modulos/lib"
 source "modulos/ctsat"
 source "modulos/modphp"
 source "modulos/codfon"
+source "modulos/jpdvgui6"
 
 # Chama as funções para PDV
 lib_check
