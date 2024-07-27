@@ -64,7 +64,7 @@ case $update in
         exibir_ajuda
         ;;
     *)
-        # Caso vazio, exibe a ajuda e sai
+        # Caso vazio, exibe erro e sai
         echo "Função desconhecida, digite {--help ou -h}."
         exit 1
         ;;
