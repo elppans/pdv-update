@@ -2,8 +2,8 @@
 
 # Verifique se o usuário é root (UID 0)
 if [[ $EUID -ne 0 ]]; then
-    echo "Deve executar como Super Usuário."
-    exit 1
+	echo "Deve executar como Super Usuário."
+	exit 1
 fi
 
 # Diretório base
@@ -12,29 +12,30 @@ export basedir
 
 # Defina os caminhos das pastas em um array
 multi_directories=(
-    "$basedir/ctsat"
-    "$basedir/moduloPHPPDV"
-    "$basedir/pdvGUI"
-    "$basedir/so"
-    "$basedir/so_co5"
-    "$basedir/so_u64"
-    "$basedir/so_ubu"
-    "$basedir/ZMAN")
+	"$basedir/ctsat"
+	"$basedir/moduloPHPPDV"
+	"$basedir/pdvGUI"
+	"$basedir/so"
+	"$basedir/so_co5"
+	"$basedir/so_u64"
+	"$basedir/so_ubu"
+	"$basedir/so_u22"
+	"$basedir/ZMAN")
 
 # Verifique a existência de cada pasta
 for directory in "${multi_directories[@]}"; do
-    if [[ -d "$directory" ]]; then
-        #echo "A pasta '$directory' existe."
-        # Verifique se a pasta contém arquivos
-        if [[ ! $(ls -A "$directory") ]]; then
-            #echo "A pasta '$directory' contém arquivos."
-            echo "A pasta '$directory' está vazia."
-            exit 1
-        fi
-    else
-        echo "A pasta '$directory' não existe."
-        exit 1
-    fi
+	if [[ -d "$directory" ]]; then
+		#echo "A pasta '$directory' existe."
+		# Verifique se a pasta contém arquivos
+		if [[ ! $(ls -A "$directory") ]]; then
+			#echo "A pasta '$directory' contém arquivos."
+			echo "A pasta '$directory' está vazia."
+			exit 1
+		fi
+	else
+		echo "A pasta '$directory' não existe."
+		exit 1
+	fi
 done
 
 # Arquivos PDV
@@ -44,10 +45,10 @@ export pdvGUIj=jpdvgui6.jar
 
 # Função para verificar se a variável está vazia
 check_variable() {
-    if [ -z "$1" ]; then
-        echo "Erro: Não foi encontrado o arquivo correspondente para a variável $2."
-        exit 1
-    fi
+	if [ -z "$1" ]; then
+		echo "Erro: Não foi encontrado o arquivo correspondente para a variável $2."
+		exit 1
+	fi
 }
 
 # Arquivos locais
@@ -78,13 +79,14 @@ export lib_dir="/Zanthus/Zeus/lib"
 export lib_co5_dir="/Zanthus/Zeus/lib_co5"
 export lib_u64_dir="/Zanthus/Zeus/lib_u64"
 export lib_ubu_dir="/Zanthus/Zeus/lib_ubu"
+export lib_u22_dir="/Zanthus/Zeus/lib_u22"
 
 # Criando/Mesclando diretórios para trabalho
 for dir in $pdvJava_dir $pdvGUI_dir $modulo_dir $ctsat_dir; do
-    if [ ! -d "$dir" ]; then
-        mkdir -p "$dir"
-        chmod 777 "$dir"
-    fi
+	if [ ! -d "$dir" ]; then
+		mkdir -p "$dir"
+		chmod 777 "$dir"
+	fi
 done
 
 # Verifica a arquitetura do sistema
