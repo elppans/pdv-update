@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 # Função para verificar se o usuário é root ou está usando sudo
 check_root() {
