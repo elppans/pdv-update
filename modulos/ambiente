@@ -15,11 +15,11 @@ multi_directories=(
 	"$basedir/ctsat"
 	"$basedir/moduloPHPPDV"
 	"$basedir/pdvGUI"
-	"$basedir/so"
-	"$basedir/so_co5"
-	"$basedir/so_u64"
-	"$basedir/so_ubu"
-	"$basedir/so_u22"
+	"$basedir/bibliotecas/so"
+	"$basedir/bibliotecas/so_co5"
+	"$basedir/bibliotecas/so_u64"
+	"$basedir/bibliotecas/so_ubu"
+	"$basedir/bibliotecas/so_u22"
 	"$basedir/ZMAN")
 
 # Verifique a existência de cada pasta
