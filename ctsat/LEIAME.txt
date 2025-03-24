@@ -1,0 +1,7 @@
+NÃO Renomear os arquivos.
+O nome do arquivo deve permanecer original.
+Exemplo:
+
+lnx_ctsat_2_0_0.xz
+lnx_ctsat_2_0_0.xz64
+

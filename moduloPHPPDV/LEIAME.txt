@@ -1,0 +1,7 @@
+NÃO Renomear os arquivos.
+O nome do arquivo deve permanecer original.
+Exemplo:
+
+moduloPHPPDV_2_14_172_150_25066_php_5_6.zip
+moduloPHPPDV_2_14_172_150_25066_php_8_1.zip
+

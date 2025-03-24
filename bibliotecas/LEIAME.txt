@@ -1,0 +1,10 @@
+NÃO Renomear os diretórios.
+O nome do diretório deve permanecer original.
+Exemplo:
+
+so
+so_co5
+so_u22
+so_u64
+so_ubu
+

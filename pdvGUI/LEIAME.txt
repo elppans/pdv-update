@@ -1,0 +1,6 @@
+NÃO Renomear os arquivos.
+O nome do arquivo deve permanecer original.
+Exemplo:
+
+jpdvgui6_v7_7_15_16.jar
+

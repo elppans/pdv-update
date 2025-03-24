@@ -1,0 +1,6 @@
+NÃO Renomear os arquivos.
+O nome do arquivo deve permanecer original.
+Exemplo:
+
+ZMAN_1_X_X_755_CZ.EXL
+
