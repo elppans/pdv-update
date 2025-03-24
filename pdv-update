@@ -1,5 +1,13 @@
 #!/bin/env bash
 
+# Função para verificar se o usuário é root ou está usando sudo
+check_root() {
+    if [ "$EUID" -ne 0 ]; then
+        echo "Erro: Este script precisa ser executado como root ou com sudo." >&2
+        exit 1
+    fi
+}
+
 update=("$@")
 export update
 
@@ -13,7 +21,6 @@ source "modulos/modphp"
 source "modulos/codfon"
 source "modulos/jpdvgui6"
 }
-export_mod
 
 # Função de ajuda
 function exibir_ajuda {
@@ -28,6 +35,12 @@ function exibir_ajuda {
     echo "  --help|p       : Exibe esta ajuda e sai"
     exit 0
 }
+
+# Chamando a função para verificar se é root
+check_root
+
+# Exporta os módulos
+export_mod
 
 # Chama as funções para PDV
 case $update in
