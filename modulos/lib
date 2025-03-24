@@ -8,23 +8,23 @@ source "modulos/diretorio"
 # shellcheck disable=SC2154
 lib_on_32_bits() {
 	echo "Executando comandos para bibliotecas 32 bits..."
-	copiar_diretorio so/ "$lib_dir"
-	copiar_diretorio so_co5/ "$lib_co5_dir"
-	copiar_diretorio so_ubu/ "$lib_ubu_dir"
+	copiar_diretorio bibliotecas/so/ "$lib_dir"
+	copiar_diretorio bibliotecas/so_co5/ "$lib_co5_dir"
+	copiar_diretorio bibliotecas/so_ubu/ "$lib_ubu_dir"
 }
 
 # Função para executar comandos em sistemas de 64 bits
 # shellcheck disable=SC2154
 lib_on_64_bits() {
 	echo "Executando comandos para bibliotecas 64 bits..."
-	copiar_diretorio so_u64/ "$lib_u64_dir"
+	copiar_diretorio bibliotecas/so_u64/ "$lib_u64_dir"
 }
 
 # Função para executar comandos em sistemas de 64 bits
 # shellcheck disable=SC2154
 lib_on_u22() {
 	echo "Executando comandos para bibliotecas 64 bits..."
-	copiar_diretorio so_u22/ "$lib_u22_dir"
+	copiar_diretorio bibliotecas/so_u22/ "$lib_u22_dir"
 }
 
 # Verifica se é 32 bits ou 64 bits e chama a função correspondente
