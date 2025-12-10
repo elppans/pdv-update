@@ -42,10 +42,15 @@ modulo_check() {
         unzip -q -o "$modulo_dir"/"$moduloPHPPDV56" -d "$modulo_dir"
     elif [[ "$versao" == "22."* ]]; then
         # Comandos específicos para o Ubuntu 22
+        echo "Parando docker do moduloPHPPDV..."
+        export MODPON="$(docker ps --format "{{.Names}}" | grep moduloPHPPDV)"
+        docker stop "$MODPON"
         echo "Executando comandos para o Ubuntu 22..."
         copiar_diretorio moduloPHPPDV/"$moduloPHPPDV81" "$modulo_dir"
         # shellcheck disable=SC2164
         unzip -q -o "$modulo_dir"/"$moduloPHPPDV81" -d "$modulo_dir"
+        echo "Iniciando docker do moduloPHPPDV..."
+        docker start "$MODPON"
     else
         echo "Versão não suportada."
     fi
