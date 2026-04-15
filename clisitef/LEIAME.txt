@@ -1,0 +1,26 @@
+1) O arquivo DEVE ser um .zip (minúsculo)
+2) O nome deve começar com um "clisitef" (minúsculo) e terminar exatamente com um Linux32.zip/Linux64.zip.
+Exemplo:
+
+clisitef-7.0.117.112.r3-Producao-Linux32.zip
+clisitef-7.0.117.112.r3-Producao-Linux64.zip
+
+3) O número da versão deve ser sempre neste formato
+4) Dentro do .zip DEVE ter as bibliotecas diretamente.
+Exemplo
+
+unzip -o clisitef-7.0.117.112.r3-Producao-Linux64.zip 
+Archive:  clisitef-7.0.117.112.r3-Producao-Linux64.zip
+  inflating: Cheque.txt              
+  inflating: Leiame.txt              
+  inflating: lgpl-2.1.txt            
+  inflating: libclisitef.so          
+  inflating: libcurl64.so            
+  inflating: libcurl_LICENSE.txt     
+  inflating: libemv64.so             
+  inflating: libpng_LICENSE.txt      
+  inflating: libqrencode64.so        
+  inflating: libqrencode_LICENSE.txt  
+  inflating: RELEASE.TXT       
+
+5) No diretório DEVE ter as 2 versões, tanto o 32 Bits quanto o 64 Bits, independente da versão do sistema.

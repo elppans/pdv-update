@@ -1,0 +1,67 @@
+#!/bin/env bash
+
+# shellcheck source=/dev/null
+source "modulos/ambiente"
+source "modulos/diretorio"
+
+# Função para executar comandos em sistemas de 32 bits
+# shellcheck disable=SC2154
+clisitef_on_32_bits() {
+    echo "Executando comandos para CliSiTef 32 bits..."
+	copiar_diretorio clisitef/"$clisitef32" "$pdvJava_dir"
+
+    # Caminho para o arquivo clisitef 32
+    clisitef=$pdvJava_dir/$clisitef32
+
+    # Verifica se o arquivo zanthus.conf existe
+    if [ -e /etc/ld.so.conf.d/zanthus.conf ]; then
+		if grep "$pdvJava_dir" /etc/ld.so.conf.d/zanthus.conf ;then
+			unzip -q -o "$clisitef" -d "$pdvJava_dir"
+			ldconfig
+		else
+			unzip -q -o "$clisitef" -d "$lib_dir"
+			ldconfig
+		fi
+    else
+		echo "Arquivo zanthus.conf não existe!"
+		ext 1
+    fi
+}
+
+# Função para executar comandos em sistemas de 64 bits
+# shellcheck disable=SC2154
+clisitef_on_64_bits() {
+    echo "Executando comandos para CliSiTef 64 bits..."
+	copiar_diretorio clisitef/"$clisitef64" "$pdvJava_dir"
+
+    # Caminho para o arquivo clisitef 32
+    clisitef=$pdvJava_dir/$clisitef64
+
+    # Verifica se o arquivo zanthus.conf existe
+    if [ -e /etc/ld.so.conf.d/zanthus.conf ]; then
+		if grep "$pdvJava_dir" /etc/ld.so.conf.d/zanthus.conf ;then
+			unzip -q -o "$clisitef" -d "$pdvJava_dir"
+			ldconfig
+		else
+			if [ -d "$lib_u64_dir" ]; then
+                unzip -q -o "$clisitef" -d "$lib_u64_dir"
+                ldconfig
+			elif [ -d "$lib_u22_dir" ]; then
+                unzip -q -o "$clisitef" -d "$lib_u22_dir"
+                ldconfig
+			fi
+		fi
+    else
+		echo "Arquivo zanthus.conf não existe!"
+		ext 1
+    fi
+}
+
+# Verifica se é 32 bits ou 64 bits e chama a função correspondente
+clisitef_check() {
+    if [ "$ARCH" == "x86_64" ]; then
+        clisitef_on_64_bits
+    else
+        clisitef_on_32_bits
+    fi
+}
