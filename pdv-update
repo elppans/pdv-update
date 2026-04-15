@@ -20,6 +20,7 @@ source "modulos/ctsat"
 source "modulos/modphp"
 source "modulos/codfon"
 source "modulos/jpdvgui6"
+source "modulos/clisitef"
 }
 
 # Função de ajuda
@@ -32,6 +33,7 @@ function exibir_ajuda {
     echo "  --zman|-z      : Atualiza o CODFON do PDV"
     echo "  --jpdvgui6|-j  : Atualiza o Java do PDV"
     echo "  --pdv|-p       : Atualiza todos os módulos {-l,-c,-m,-z,-j}"
+	echo "  --clisitef|-s  : Atualiza o bibliotecas CliSiTef do PDV"
     echo "  --help|p       : Exibe esta ajuda e sai"
     exit 0
 }
@@ -74,6 +76,10 @@ case $update in
     --help|-h)
         # Exibe esta ajuda e sai
         exibir_ajuda
+        ;;
+    --clisitef|-s)
+        # Atualiza o clisitef do PDV
+        clisitef_check
         ;;
     *)
         # Caso vazio, exibe erro e sai

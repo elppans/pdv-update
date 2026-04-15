@@ -13,6 +13,7 @@ export basedir
 # Defina os caminhos das pastas em um array
 multi_directories=(
 	"$basedir/ctsat"
+	"$basedir/clisitef"
 	"$basedir/moduloPHPPDV"
 	"$basedir/pdvGUI"
 	"$basedir/bibliotecas/so"
@@ -69,6 +70,12 @@ check_variable "$pdvGUI" "pdvGUI"
 
 ZMAN="$(find ZMAN/ZMAN*.EXL 2>/dev/null | sort -V | tail -n 1 | xargs -r basename 2>/dev/null)"
 check_variable "$ZMAN" "ZMAN"
+
+clisitef32="$(find clisitef/clisitef*Linux32.zip 2>/dev/null | sort -V | tail -n 1 | xargs -r basename 2>/dev/null)"
+check_variable "$clisitef32" "clisitef32"
+
+clisitef64="$(find clisitef/clisitef*Linux64.zip 2>/dev/null | sort -V | tail -n 1 | xargs -r basename 2>/dev/null)"
+check_variable "$clisitef64" "clisitef64"
 
 # Diretórios de aplicação
 export pdvJava_dir="/Zanthus/Zeus/pdvJava"
