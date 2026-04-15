@@ -3,6 +3,7 @@
 - Deve ser executado como Super Usuário.  
 - Deve ser criado os seguintes diretórios e adicionado os arquivos correspondentes:  
 ```ini
+clisitef
 ctsat  
 moduloPHPPDV  
 pdvGUI  
