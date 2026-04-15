@@ -8,6 +8,7 @@
 !/modulos/diretorio"
 !/modulos/lib"
 !/modulos/ctsat"
+!/modulos/clisitef"
 !/modulos/modphp"
 !/modulos/codfon"
 !/modulos/jpdvgui6"
@@ -15,6 +16,7 @@
 !/php/php56_u12.txt
 !/bibliotecas/LEIAME.txt
 !/ctsat/LEIAME.txt
+!/clisitef/LEIAME.txt"
 !/moduloPHPPDV/LEIAME.txt
 !/pdvGUI/LEIAME.txt
 !/ZMAN/LEIAME.txt
